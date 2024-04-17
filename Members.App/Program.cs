@@ -15,19 +15,21 @@ namespace Members.App
         [STAThread]
         static void Main()
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
+            var config = new ConfigurationBuilder()
+                .SetBasePath( Directory.GetCurrentDirectory() )
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var types = new [] { typeof( Person ), typeof( Group ) };
+
             var services = new ServiceCollection();
             services.AddDbContext<MembersContext>( 
                 options => options.UseSqlServer( config.GetConnectionString( "Members" ) ) );
-            services.AddSingleton<IFactory>( sp => new Factory( typeof( Person ), typeof( Group ) ) );
+            services.AddSingleton<IFactory>( sp => new Factory( types ) );
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddTransient<MainForm>();
             var serviceProvider = services.BuildServiceProvider();

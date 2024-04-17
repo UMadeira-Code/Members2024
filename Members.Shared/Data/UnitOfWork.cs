@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using Members.Core.Data;
@@ -19,8 +13,7 @@ namespace Members.Shared.Data
             Factory = factory;
         }
 
-        public IFactory Factory { get; }
-
+        public    IFactory  Factory { get; }
         protected DbContext Context { get; }
 
         private IDbContextTransaction? Transaction { get; set; }

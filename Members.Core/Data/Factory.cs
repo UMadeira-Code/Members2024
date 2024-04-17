@@ -3,17 +3,17 @@ namespace Members.Core.Data
 {
     public class Factory : IFactory
     {
-        private IList<Type> Constructs { get; set; } = new List<Type>();
+        private ICollection<Type> Constructs { get; set; }
 
         public Factory( params Type[] types )
         {
-            Constructs = new List<Type>(types);
+            Constructs = new List<Type>( types );
         }
 
         public void Regist( Type type ) 
         {
-            if (Constructs.Contains(type)) return;
-            Constructs.Add(type);
+            if ( Constructs.Contains( type ) ) return;
+            Constructs.Add( type );
         }
 
         public T? Create<T>(params object?[]? args)
