@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Members.Core.Data;
 using Members.Core.Repositories;
+using System.Collections;
 
 namespace Members.Shared.Data
 {
@@ -44,6 +45,5 @@ namespace Members.Shared.Data
         {
             Context.Remove(item);
         }
-
     }
 }

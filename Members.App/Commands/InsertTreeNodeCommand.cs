@@ -1,10 +1,5 @@
 ﻿using Members.Core.Commands;
 using Members.Shared.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Members.App.Commands
 {
