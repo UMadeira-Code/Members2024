@@ -2,8 +2,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
-using Members.Core.Data;
+using Members.Core.Repositories;
 using Members.Shared.Data;
+using Members.Shared.Data.Entities;
 
 namespace Members.App
 {

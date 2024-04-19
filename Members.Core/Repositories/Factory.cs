@@ -1,5 +1,5 @@
 ﻿
-namespace Members.Core.Data
+namespace Members.Core.Repositories
 {
     public class Factory : IFactory
     {
@@ -10,12 +10,6 @@ namespace Members.Core.Data
             Constructs = new List<Type>( types );
         }
 
-        public void Regist( Type type ) 
-        {
-            if ( Constructs.Contains( type ) ) return;
-            Constructs.Add( type );
-        }
-
         public T? Create<T>(params object?[]? args)
         {
             var type = typeof(T);
@@ -24,9 +18,9 @@ namespace Members.Core.Data
             return Cast<T>( Activator.CreateInstance( type, args ) );
         }
 
-        public static T? Cast<T>(object? obj)
+        public static T? Cast<T>( object? obj )
         {
-            return (T?)obj;
+            return (T?) obj;
         }
     }
 }

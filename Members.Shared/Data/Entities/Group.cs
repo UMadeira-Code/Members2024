@@ -1,4 +1,4 @@
-﻿namespace Members.Shared.Data
+﻿namespace Members.Shared.Data.Entities
 {
     public class Group : Member
     {

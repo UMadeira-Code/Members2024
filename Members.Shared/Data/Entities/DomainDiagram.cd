@@ -8,29 +8,29 @@
     </Compartments>
     <TypeIdentifier />
   </Class>
-  <Class Name="Members.Shared.Data.Member">
-    <Position X="6.25" Y="4" Width="1.5" />
+  <Class Name="Members.Shared.Data.Entities.Member" Collapsed="true">
+    <Position X="6.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Data\Member.cs</FileName>
+      <FileName>Data\Entities\Member.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Members.Shared.Data.Group" Collapsed="true">
-    <Position X="4.25" Y="6.25" Width="1.5" />
+  <Class Name="Members.Shared.Data.Entities.Person">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Entities\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Members.Shared.Data.Entities.Group">
+    <Position X="8.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
-      <FileName>Data\Group.cs</FileName>
+      <FileName>Data\Entities\Group.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Members" />
     </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="Members.Shared.Data.Person" Collapsed="true">
-    <Position X="8.5" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Data\Person.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

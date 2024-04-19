@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Members.Shared.Data.Entities;
 
 namespace Members.Shared.Data.Configurations
 {

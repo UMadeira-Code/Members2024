@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage;
 
 using Members.Core.Data;
+using Members.Core.Repositories;
 
 namespace Members.Shared.Data
 {

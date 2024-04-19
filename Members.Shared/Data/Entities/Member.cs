@@ -1,7 +1,6 @@
-﻿
-using Members.Core.Data;
+﻿using Members.Core.Data;
 
-namespace Members.Shared.Data
+namespace Members.Shared.Data.Entities
 {
     public abstract class Member : Item
     {

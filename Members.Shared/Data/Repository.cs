@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Members.Core.Data;
+using Members.Core.Repositories;
 
 namespace Members.Shared.Data
 {

@@ -1,5 +1,6 @@
-using Members.Core.Data;
-using Members.Shared.Data;
+using Members.Core.Repositories;
+using Members.Shared.Data.Entities;
+using System.Diagnostics;
 
 namespace Members.App
 {
@@ -52,36 +53,31 @@ namespace Members.App
 
         private void OnAddPerson( object sender, EventArgs e )
         {
-            var dialog = new PromptForm {
-                Title = "Create Person",
-                Label = "Name:",
-                Value = string.Empty
-            };
+            var dialog = new PromptForm( "Create Person", "Name:" );
 
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
-                var person = UnitOfWork.GetRepository<Person>().Create();
+                var person = UnitOfWork?.GetRepository<Person>()?.Create();
+                Debug.Assert( person != null, "person != null" );
+
                 person.Name = dialog.Value;
-                UnitOfWork.GetRepository<Person>().Insert( person );
+                UnitOfWork?.GetRepository<Person>()?.Insert( person );
 
                 AddMemberNode( peopleTreeView.Nodes, person );
             }
-
         }
 
         private void OnAddGroup( object sender, EventArgs e )
         {
-            var dialog = new PromptForm {
-                Title = "Create Group",
-                Label = "Name:",
-                Value = string.Empty
-            };
+            var dialog = new PromptForm( "Create Group", "Name:" );
 
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
-                var group = UnitOfWork.GetRepository<Group>().Create();
+                var group = UnitOfWork?.GetRepository<Group>()?.Create();
+                Debug.Assert( group != null, "group != null" );
+
                 group.Name = dialog.Value;
-                UnitOfWork.GetRepository<Group>().Insert( group );
+                UnitOfWork?.GetRepository<Group>()?.Insert( group );
 
                 AddMemberNode( groupsTreeView.Nodes, group );
             }

@@ -1,4 +1,6 @@
-﻿namespace Members.Core.Data
+﻿using Members.Core.Data;
+
+namespace Members.Core.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
