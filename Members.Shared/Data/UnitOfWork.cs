@@ -54,7 +54,7 @@ namespace Members.Shared.Data
             return repository;
         }
 
-        protected IRepository<TEntity>? CreateRepository<TEntity>() where TEntity : Item
+        protected virtual IRepository<TEntity>? CreateRepository<TEntity>() where TEntity : Item
         {
             return new Repository<TEntity>( Factory, Context );
         }
