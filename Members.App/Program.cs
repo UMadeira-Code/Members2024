@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Members.Core.Repositories;
 using Members.Shared.Data;
 using Members.Shared.Data.Entities;
+using Members.Core.Commands;
 
 namespace Members.App
 {
@@ -32,6 +33,7 @@ namespace Members.App
                 options => options.UseSqlServer( config.GetConnectionString( "Members" ) ) );
             services.AddSingleton<IFactory>( sp => new Factory( types ) );
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<ICommandManager, ObservableCommandManager>();
             services.AddTransient<MainForm>();
             var serviceProvider = services.BuildServiceProvider();
 

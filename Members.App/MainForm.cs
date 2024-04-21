@@ -1,4 +1,7 @@
+using Members.Core.Commands;
+using Members.Core.Observables;
 using Members.Core.Repositories;
+using Members.Models.Commands;
 using Members.Shared.Data.Entities;
 using System.Diagnostics;
 
@@ -6,15 +9,44 @@ namespace Members.App
 {
     public partial class MainForm : Form
     {
-        public MainForm( IUnitOfWork unitOfWork )
+        public MainForm( IUnitOfWork unitOfWork, ICommandManager commandManager )
         {
-            UnitOfWork = unitOfWork;
+            UnitOfWork     = unitOfWork;
+            CommandManager = commandManager;
+
             InitializeComponent();
+            InitializeCommands( commandManager );
 
             LoadData();
         }
 
-        IUnitOfWork UnitOfWork { get; }
+        IUnitOfWork     UnitOfWork     { get; }
+        ICommandManager CommandManager { get; }
+
+        private void InitializeCommands( ICommandManager manager )
+        {
+            undoToolStripButton.Enabled = false;
+            redoToolStripButton.Enabled = false;
+
+            undoToolStripButton.Click += ( s, a ) => manager.Undo();
+            redoToolStripButton.Click += ( s, a ) => manager.Redo();
+
+            undoToolStripMenuItem.Enabled = false;
+            redoToolStripMenuItem.Enabled = false;
+
+            undoToolStripMenuItem.Click += ( s, a ) => manager.Undo();
+            redoToolStripMenuItem.Click += ( s, a ) => manager.Redo();
+
+            var observable = manager as IObservable;
+            if ( observable != null )
+            {
+                observable.Notify += ( s, a ) => undoToolStripButton.Enabled = manager.HasUndo;
+                observable.Notify += ( s, a ) => redoToolStripButton.Enabled = manager.HasRedo;
+
+                observable.Notify += ( s, a ) => undoToolStripMenuItem.Enabled = manager.HasUndo;
+                observable.Notify += ( s, a ) => redoToolStripMenuItem.Enabled = manager.HasRedo;
+            }
+        }
 
         private void OnExit( object sender, EventArgs e )
         {
@@ -48,6 +80,8 @@ namespace Members.App
             var node = nodes.Add(member.Name);
             node.ImageKey = node.SelectedImageKey = member.GetType().Name;
             node.Tag      = member;
+
+            member.Notify += ( s, a ) => node.Text = member.Name;
 
             return node;
         }
@@ -111,7 +145,7 @@ namespace Members.App
             var dialog = new PromptForm( "Edit Name", "Name", member.Name );
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
-                member.Name = dialog.Value;
+                CommandManager.Execute( new RenameCommand( member, dialog.Value ) );
             }
         }
     }
