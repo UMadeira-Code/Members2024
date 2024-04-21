@@ -1,4 +1,5 @@
 ﻿using Members.Core.Data;
+using System.Linq.Expressions;
 
 namespace Members.Core.Repositories
 {
@@ -11,5 +12,8 @@ namespace Members.Core.Repositories
         void Insert( TEntity item );
         void Update( TEntity item );
         void Delete( TEntity item );
+
+        void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty>> expression ) where TProperty : class;
+        void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression ) where TProperty : class;
     }
 }

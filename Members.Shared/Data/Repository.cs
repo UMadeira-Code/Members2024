@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Members.Core.Data;
 using Members.Core.Repositories;
+using System.Linq.Expressions;
 
 namespace Members.Shared.Data
 {
@@ -43,6 +44,16 @@ namespace Members.Shared.Data
         public void Delete(TEntity item)
         {
             Context.Remove(item);
+        }
+
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty>> expression ) where TProperty : class
+        {
+            Context.Entry( entity ).Reference( expression ).Load();
+        }
+
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression ) where TProperty : class
+        {
+            Context.Entry( entity ).Collection( expression ).Load();
         }
     }
 }
