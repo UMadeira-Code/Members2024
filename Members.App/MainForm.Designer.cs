@@ -73,6 +73,8 @@
             peopleTreeView = new TreeView();
             imageList = new ImageList( components );
             groupsTreeView = new TreeView();
+            toolStripSeparator7 = new ToolStripSeparator();
+            toolStripButton4 = new ToolStripButton();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
             statusStrip.SuspendLayout();
@@ -290,7 +292,7 @@
             // toolStrip
             // 
             toolStrip.ImageScalingSize = new Size( 28, 28 );
-            toolStrip.Items.AddRange( new ToolStripItem[ ] { toolStripButton1, toolStripSeparator6, toolStripButton2, toolStripButton3 } );
+            toolStrip.Items.AddRange( new ToolStripItem[ ] { toolStripButton1, toolStripSeparator6, toolStripButton2, toolStripButton3, toolStripSeparator7, toolStripButton4 } );
             toolStrip.Location = new Point( 0, 38 );
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size( 1367, 38 );
@@ -423,6 +425,21 @@
             groupsTreeView.TabIndex = 3;
             groupsTreeView.AfterSelect +=  OnSelectNode ;
             // 
+            // toolStripSeparator7
+            // 
+            toolStripSeparator7.Name = "toolStripSeparator7";
+            toolStripSeparator7.Size = new Size( 6, 38 );
+            // 
+            // toolStripButton4
+            // 
+            toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton4.Image = (Image) resources.GetObject( "toolStripButton4.Image" );
+            toolStripButton4.ImageTransparentColor = Color.Magenta;
+            toolStripButton4.Name = "toolStripButton4";
+            toolStripButton4.Size = new Size( 40, 32 );
+            toolStripButton4.Text = "toolStripButton4";
+            toolStripButton4.Click +=  OnEdit ;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF( 12F, 30F );
@@ -491,5 +508,7 @@
         private TreeView peopleTreeView;
         private TreeView groupsTreeView;
         private ImageList imageList;
+        private ToolStripSeparator toolStripSeparator7;
+        private ToolStripButton toolStripButton4;
     }
 }

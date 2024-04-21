@@ -47,6 +47,7 @@ namespace Members.App
         {
             var node = nodes.Add(member.Name);
             node.ImageKey = node.SelectedImageKey = member.GetType().Name;
+            node.Tag      = member;
 
             return node;
         }
@@ -95,11 +96,23 @@ namespace Members.App
                 SelectedNode.TreeView.SelectedNode = null;
             }
             SelectedNode = e.Node;
-            if ( SelectedNode != null ) 
+            if ( SelectedNode != null )
             {
                 SelectedNode.TreeView.SelectedNode = SelectedNode;
             }
             editToolStripMenuItem.Enabled = SelectedNode != null;
+        }
+
+        private void OnEdit( object sender, EventArgs e )
+        {
+            var member = SelectedNode?.Tag as Member;
+            if ( member == null ) return;
+
+            var dialog = new PromptForm( "Edit Name", "Name", member.Name );
+            if ( dialog.ShowDialog( this ) == DialogResult.OK )
+            {
+                member.Name = dialog.Value;
+            }
         }
     }
 }
