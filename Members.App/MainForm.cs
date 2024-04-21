@@ -84,5 +84,22 @@ namespace Members.App
 
         }
 
+        private TreeNode? SelectedNode { get; set; }
+
+        private void OnSelectNode( object sender, TreeViewEventArgs e )
+        {
+            if ( SelectedNode == e.Node ) return;
+
+            if ( SelectedNode != null )
+            {
+                SelectedNode.TreeView.SelectedNode = null;
+            }
+            SelectedNode = e.Node;
+            if ( SelectedNode != null ) 
+            {
+                SelectedNode.TreeView.SelectedNode = SelectedNode;
+            }
+            editToolStripMenuItem.Enabled = SelectedNode != null;
+        }
     }
 }
