@@ -2,6 +2,7 @@
 using Members.Core.Data;
 using Members.Core.Repositories;
 using System.Linq.Expressions;
+using System.Diagnostics;
 
 namespace Members.Shared.Data
 {
@@ -54,6 +55,14 @@ namespace Members.Shared.Data
         public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression ) where TProperty : class
         {
             Context.Entry( entity ).Collection( expression ).Load();
+        }
+
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, ICollection<TProperty>>> expression ) where TProperty : class
+        {
+            var parameter = expression.Parameters[0];
+            var body = Expression.Convert( expression.Body, typeof( IEnumerable<TProperty> ) );
+            Context.Entry( entity ).Collection( 
+                Expression.Lambda<Func<TEntity, IEnumerable<TProperty>>>( body, parameter ) ).Load();
         }
     }
 }

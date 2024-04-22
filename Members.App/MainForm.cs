@@ -1,3 +1,4 @@
+using Members.App.Commands;
 using Members.Core.Commands;
 using Members.Core.Observables;
 using Members.Core.Repositories;
@@ -11,7 +12,7 @@ namespace Members.App
     {
         public MainForm( IUnitOfWork unitOfWork, ICommandManager commandManager )
         {
-            UnitOfWork     = unitOfWork;
+            UnitOfWork = unitOfWork;
             CommandManager = commandManager;
 
             InitializeComponent();
@@ -20,7 +21,7 @@ namespace Members.App
             LoadData();
         }
 
-        IUnitOfWork     UnitOfWork     { get; }
+        IUnitOfWork UnitOfWork { get; }
         ICommandManager CommandManager { get; }
 
         private void InitializeCommands( ICommandManager manager )
@@ -67,6 +68,8 @@ namespace Members.App
 
             foreach ( var group in UnitOfWork.GetRepository<Group>().GetAll() )
             {
+                UnitOfWork.GetRepository<Group>().Ensure( group, g => g.Members );
+
                 var node = AddMemberNode(groupsTreeView.Nodes, group);
                 foreach ( var person in group.Members )
                 {
@@ -79,7 +82,7 @@ namespace Members.App
         {
             var node = nodes.Add(member.Name);
             node.ImageKey = node.SelectedImageKey = member.GetType().Name;
-            node.Tag      = member;
+            node.Tag = member;
 
             member.Notify += ( s, a ) => node.Text = member.Name;
 
@@ -125,15 +128,15 @@ namespace Members.App
         {
             if ( SelectedNode == e.Node ) return;
 
-            if ( SelectedNode != null )
-            {
-                SelectedNode.TreeView.SelectedNode = null;
-            }
+            //if ( SelectedNode != null )
+            //{
+            //    SelectedNode.TreeView.SelectedNode = null;
+            //}
             SelectedNode = e.Node;
-            if ( SelectedNode != null )
-            {
-                SelectedNode.TreeView.SelectedNode = SelectedNode;
-            }
+            //if ( SelectedNode != null )
+            //{
+            //    SelectedNode.TreeView.SelectedNode = SelectedNode;
+            //}
             editToolStripMenuItem.Enabled = SelectedNode != null;
         }
 
@@ -147,6 +150,34 @@ namespace Members.App
             {
                 CommandManager.Execute( new RenameCommand( member, dialog.Value ) );
             }
+        }
+
+        private void OnJoinGroup( object sender, EventArgs e )
+        {
+            var person = peopleTreeView.SelectedNode?.Tag as Person;
+            if ( person == null ) return;
+
+            var group  = groupsTreeView.SelectedNode?.Tag as Group;
+            if ( group == null ) return;
+
+            CommandManager.Execute( new MacroCommand(
+                new JoinGroupCommand( group, person ),
+                new InsertTreeNodeCommand( groupsTreeView.SelectedNode.Nodes, person ) 
+            ) );
+        }
+
+        private void OnLeaveGroup( object sender, EventArgs e )
+        {
+            var person = groupsTreeView.SelectedNode?.Tag as Person;
+            if ( person == null ) return;
+
+            var group = groupsTreeView.SelectedNode?.Parent.Tag as Group;
+            Debug.Assert( group != null, "group != null" );
+
+            CommandManager.Execute( new MacroCommand(
+                new RemoveTreeNodeCommand( groupsTreeView.SelectedNode ),
+                new LeaveGroupCommand( group, person ) 
+            ) );   
         }
     }
 }

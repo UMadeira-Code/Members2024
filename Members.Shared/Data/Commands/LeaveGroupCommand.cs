@@ -3,10 +3,10 @@ using Members.Shared.Data.Entities;
 
 namespace Members.Models.Commands
 {
-    public class JoinCommand : ICommand
+    public class LeaveGroupCommand : ICommand
     {
-        public JoinCommand( Group group, Person member ) 
-        { 
+        public LeaveGroupCommand( Group group, Person member )
+        {
             Group  = group;
             Member = member;
         }
@@ -14,9 +14,9 @@ namespace Members.Models.Commands
         private Group  Group  { get; }
         private Person Member { get; }
 
-        public void Do()   => Group.Members.Add( Member );
-        public void Undo() => Group.Members.Remove( Member );
+        public void Do()   => Group.Members.Remove(Member);
+        public void Undo() => Group.Members.Add(Member);
         public void Redo() => Do();
-        public void Cancel() {}
+        public void Cancel() { }
     }
 }
