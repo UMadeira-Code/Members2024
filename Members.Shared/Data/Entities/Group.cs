@@ -2,6 +2,6 @@
 {
     public class Group : Member
     {
-        public virtual IList<Person> Members { get; set; } = new List<Person>();
+        public ICollection<Person> Members { get; set; } = new List<Person>();
     }
 }
