@@ -8,7 +8,7 @@ namespace Members.Shared.Data
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        public UnitOfWork( MembersContext context, IFactory factory )
+        public UnitOfWork( DbContext context, IFactory factory )
         {
             Context = context;
             Factory = factory;
