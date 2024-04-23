@@ -74,8 +74,8 @@
             statusStrip = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             tableLayoutPanel1 = new TableLayoutPanel();
-            moveRightButton = new Button();
-            moveLeftButton = new Button();
+            joinButton = new Button();
+            leaveButton = new Button();
             peopleTreeView = new TreeView();
             imageList = new ImageList( components );
             groupsTreeView = new TreeView();
@@ -417,13 +417,13 @@
             tableLayoutPanel1.ColumnStyles.Add( new ColumnStyle( SizeType.Percent, 49.9999924F ) );
             tableLayoutPanel1.ColumnStyles.Add( new ColumnStyle() );
             tableLayoutPanel1.ColumnStyles.Add( new ColumnStyle( SizeType.Percent, 50.0000038F ) );
-            tableLayoutPanel1.Controls.Add( moveRightButton, 1, 0 );
-            tableLayoutPanel1.Controls.Add( moveLeftButton, 1, 1 );
+            tableLayoutPanel1.Controls.Add( joinButton, 1, 0 );
+            tableLayoutPanel1.Controls.Add( leaveButton, 1, 1 );
             tableLayoutPanel1.Controls.Add( peopleTreeView, 0, 0 );
             tableLayoutPanel1.Controls.Add( groupsTreeView, 2, 0 );
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point( 0, 59 );
-            tableLayoutPanel1.Margin = new Padding( 1, 1, 1, 1 );
+            tableLayoutPanel1.Margin = new Padding( 1 );
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add( new RowStyle( SizeType.Percent, 50F ) );
@@ -431,29 +431,31 @@
             tableLayoutPanel1.Size = new Size( 797, 422 );
             tableLayoutPanel1.TabIndex = 3;
             // 
-            // moveRightButton
+            // joinButton
             // 
-            moveRightButton.Anchor = AnchorStyles.Bottom;
-            moveRightButton.Image = (Image) resources.GetObject( "moveRightButton.Image" );
-            moveRightButton.Location = new Point( 379, 178 );
-            moveRightButton.Margin = new Padding( 1, 1, 1, 1 );
-            moveRightButton.Name = "moveRightButton";
-            moveRightButton.Size = new Size( 37, 32 );
-            moveRightButton.TabIndex = 0;
-            moveRightButton.UseVisualStyleBackColor = true;
-            moveRightButton.Click +=  OnJoinGroup ;
+            joinButton.Anchor = AnchorStyles.Bottom;
+            joinButton.Enabled = false;
+            joinButton.Image = (Image) resources.GetObject( "joinButton.Image" );
+            joinButton.Location = new Point( 379, 178 );
+            joinButton.Margin = new Padding( 1 );
+            joinButton.Name = "joinButton";
+            joinButton.Size = new Size( 37, 32 );
+            joinButton.TabIndex = 0;
+            joinButton.UseVisualStyleBackColor = true;
+            joinButton.Click +=  OnJoinGroup ;
             // 
-            // moveLeftButton
+            // leaveButton
             // 
-            moveLeftButton.Anchor = AnchorStyles.Top;
-            moveLeftButton.Image = (Image) resources.GetObject( "moveLeftButton.Image" );
-            moveLeftButton.Location = new Point( 379, 212 );
-            moveLeftButton.Margin = new Padding( 1, 1, 1, 1 );
-            moveLeftButton.Name = "moveLeftButton";
-            moveLeftButton.Size = new Size( 37, 32 );
-            moveLeftButton.TabIndex = 1;
-            moveLeftButton.UseVisualStyleBackColor = true;
-            moveLeftButton.Click +=  OnLeaveGroup ;
+            leaveButton.Anchor = AnchorStyles.Top;
+            leaveButton.Enabled = false;
+            leaveButton.Image = (Image) resources.GetObject( "leaveButton.Image" );
+            leaveButton.Location = new Point( 379, 212 );
+            leaveButton.Margin = new Padding( 1 );
+            leaveButton.Name = "leaveButton";
+            leaveButton.Size = new Size( 37, 32 );
+            leaveButton.TabIndex = 1;
+            leaveButton.UseVisualStyleBackColor = true;
+            leaveButton.Click +=  OnLeaveGroup ;
             // 
             // peopleTreeView
             // 
@@ -463,7 +465,7 @@
             peopleTreeView.ImageIndex = 0;
             peopleTreeView.ImageList = imageList;
             peopleTreeView.Location = new Point( 1, 1 );
-            peopleTreeView.Margin = new Padding( 1, 1, 1, 1 );
+            peopleTreeView.Margin = new Padding( 1 );
             peopleTreeView.Name = "peopleTreeView";
             tableLayoutPanel1.SetRowSpan( peopleTreeView, 2 );
             peopleTreeView.SelectedImageIndex = 0;
@@ -487,7 +489,7 @@
             groupsTreeView.ImageIndex = 0;
             groupsTreeView.ImageList = imageList;
             groupsTreeView.Location = new Point( 418, 1 );
-            groupsTreeView.Margin = new Padding( 1, 1, 1, 1 );
+            groupsTreeView.Margin = new Padding( 1 );
             groupsTreeView.Name = "groupsTreeView";
             tableLayoutPanel1.SetRowSpan( groupsTreeView, 2 );
             groupsTreeView.SelectedImageIndex = 0;
@@ -505,7 +507,7 @@
             Controls.Add( toolStrip );
             Controls.Add( menuStrip );
             MainMenuStrip = menuStrip;
-            Margin = new Padding( 1, 1, 1, 1 );
+            Margin = new Padding( 1 );
             Name = "MainForm";
             Text = "Members 2024";
             menuStrip.ResumeLayout( false );
@@ -559,8 +561,8 @@
         private ToolStripButton groupToolStripButton;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private TableLayoutPanel tableLayoutPanel1;
-        private Button moveRightButton;
-        private Button moveLeftButton;
+        private Button joinButton;
+        private Button leaveButton;
         private TreeView peopleTreeView;
         private TreeView groupsTreeView;
         private ImageList imageList;

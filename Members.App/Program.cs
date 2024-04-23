@@ -29,7 +29,7 @@ namespace Members.App
             var types = new [] { typeof( Person ), typeof( Group ) };
 
             var services = new ServiceCollection();
-            services.AddDbContext<MembersContext>( 
+            services.AddDbContext<DbContext,MembersContext>( 
                 options => options.UseSqlServer( config.GetConnectionString( "Members" ) ) );
             services.AddSingleton<IFactory>( sp => new Factory( types ) );
             services.AddSingleton<IUnitOfWork, UnitOfWork>();

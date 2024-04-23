@@ -1,4 +1,5 @@
 using Members.App.Commands;
+using Members.App.Extensions;
 using Members.Core.Commands;
 using Members.Core.Observables;
 using Members.Core.Repositories;
@@ -18,6 +19,7 @@ namespace Members.App
 
             InitializeComponent();
             InitializeCommands( executor );
+            InitializeSelections();
 
             LoadData();
         }
@@ -49,6 +51,21 @@ namespace Members.App
                 observable.Notify += ( s, a ) => redoToolStripMenuItem.Enabled = executor.HasRedo;
             }
         }
+
+        private void InitializeSelections()
+        {
+            peopleTreeView.AfterSelect += ( s, a ) =>
+                joinButton.Enabled = peopleTreeView.HasSelectedNode() &&
+                                     groupsTreeView.HasSelectedNodeOfType<Group>();
+
+            groupsTreeView.AfterSelect += ( s, a ) =>
+                joinButton.Enabled = peopleTreeView.HasSelectedNode() &&
+                                     groupsTreeView.HasSelectedNodeOfType<Group>();
+
+            groupsTreeView.AfterSelect += ( s, a ) =>
+                leaveButton.Enabled = groupsTreeView.HasSelectedNodeOfType<Person>();
+        }
+
 
         private void OnExit( object sender, EventArgs e )
         {
@@ -143,7 +160,7 @@ namespace Members.App
 
         private void OnEdit( object sender, EventArgs e )
         {
-            var member = SelectedNode?.Tag as Member;
+            var member = SelectedNode?.GetSemantic<Member>();
             if ( member == null ) return;
 
             var dialog = new PromptForm( "Edit Name", "Name", member.Name );
@@ -155,10 +172,10 @@ namespace Members.App
 
         private void OnJoinGroup( object sender, EventArgs e )
         {
-            var person = peopleTreeView.SelectedNode?.Tag as Person;
+            var person = peopleTreeView.GetSelectedSemantic<Person>();
             if ( person == null ) return;
 
-            var group  = groupsTreeView.SelectedNode?.Tag as Group;
+            var group  = groupsTreeView.GetSelectedSemantic<Group>();
             if ( group == null ) return;
 
             var node = AddMemberNode( groupsTreeView.SelectedNode.Nodes, person );
@@ -170,7 +187,7 @@ namespace Members.App
 
         private void OnLeaveGroup( object sender, EventArgs e )
         {
-            var person = groupsTreeView.SelectedNode?.Tag as Person;
+            var person = groupsTreeView.GetSelectedSemantic<Person>();
             if ( person == null ) return;
 
             var group = groupsTreeView.SelectedNode?.Parent.Tag as Group;
