@@ -2,9 +2,9 @@
 
 namespace Members.Core.Commands
 {
-    public class ObservableCommandManager : Observable, ICommandManager
+    public class ObservableExecutor : Observable, IExecutor
     {
-        private readonly ICommandManager CommandManager = new CommandManager();
+        private readonly IExecutor CommandManager = new Executor();
 
         public bool HasUndo => CommandManager.HasUndo;
 

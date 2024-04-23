@@ -3,9 +3,9 @@ using Members.Shared.Data.Entities;
 
 namespace Members.Models.Commands
 {
-    public class DeleteCommand : ICommand
+    public class DeleteMemberCommand : ICommand
     {
-        public DeleteCommand( Member member ) 
+        public DeleteMemberCommand( Member member ) 
         { 
             Member = member;
         }

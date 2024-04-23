@@ -3,9 +3,9 @@ using Members.Shared.Data.Entities;
 
 namespace Members.Models.Commands
 {
-    public class RenameCommand : ICommand
+    public class RenameMemberCommand : ICommand
     {
-        public RenameCommand( Member member, string name ) 
+        public RenameMemberCommand( Member member, string name ) 
         {
             Member = member;
             Name   = name;

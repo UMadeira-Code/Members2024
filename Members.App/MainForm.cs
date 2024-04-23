@@ -4,48 +4,49 @@ using Members.Core.Observables;
 using Members.Core.Repositories;
 using Members.Models.Commands;
 using Members.Shared.Data.Entities;
+using System;
 using System.Diagnostics;
 
 namespace Members.App
 {
     public partial class MainForm : Form
     {
-        public MainForm( IUnitOfWork unitOfWork, ICommandManager commandManager )
+        public MainForm( IUnitOfWork unitOfWork, IExecutor executor )
         {
             UnitOfWork = unitOfWork;
-            CommandManager = commandManager;
+            Executor   = executor;
 
             InitializeComponent();
-            InitializeCommands( commandManager );
+            InitializeCommands( executor );
 
             LoadData();
         }
 
         IUnitOfWork UnitOfWork { get; }
-        ICommandManager CommandManager { get; }
+        IExecutor   Executor   { get; }
 
-        private void InitializeCommands( ICommandManager manager )
+        private void InitializeCommands( IExecutor executor )
         {
             undoToolStripButton.Enabled = false;
             redoToolStripButton.Enabled = false;
 
-            undoToolStripButton.Click += ( s, a ) => manager.Undo();
-            redoToolStripButton.Click += ( s, a ) => manager.Redo();
+            undoToolStripButton.Click += ( s, a ) => executor.Undo();
+            redoToolStripButton.Click += ( s, a ) => executor.Redo();
 
             undoToolStripMenuItem.Enabled = false;
             redoToolStripMenuItem.Enabled = false;
 
-            undoToolStripMenuItem.Click += ( s, a ) => manager.Undo();
-            redoToolStripMenuItem.Click += ( s, a ) => manager.Redo();
+            undoToolStripMenuItem.Click += ( s, a ) => executor.Undo();
+            redoToolStripMenuItem.Click += ( s, a ) => executor.Redo();
 
-            var observable = manager as IObservable;
+            var observable = executor as IObservable;
             if ( observable != null )
             {
-                observable.Notify += ( s, a ) => undoToolStripButton.Enabled = manager.HasUndo;
-                observable.Notify += ( s, a ) => redoToolStripButton.Enabled = manager.HasRedo;
+                observable.Notify += ( s, a ) => undoToolStripButton.Enabled = executor.HasUndo;
+                observable.Notify += ( s, a ) => redoToolStripButton.Enabled = executor.HasRedo;
 
-                observable.Notify += ( s, a ) => undoToolStripMenuItem.Enabled = manager.HasUndo;
-                observable.Notify += ( s, a ) => redoToolStripMenuItem.Enabled = manager.HasRedo;
+                observable.Notify += ( s, a ) => undoToolStripMenuItem.Enabled = executor.HasUndo;
+                observable.Notify += ( s, a ) => redoToolStripMenuItem.Enabled = executor.HasRedo;
             }
         }
 
@@ -101,7 +102,11 @@ namespace Members.App
                 person.Name = dialog.Value;
                 UnitOfWork?.GetRepository<Person>()?.Insert( person );
 
-                AddMemberNode( peopleTreeView.Nodes, person );
+                var node = AddMemberNode( peopleTreeView.Nodes, person );
+
+                Executor.Execute( new MacroCommand( 
+                    new CreateCommand( person ), 
+                    new InsertTreeNodeCommand( peopleTreeView.Nodes, node ) ) );
             }
         }
 
@@ -117,9 +122,12 @@ namespace Members.App
                 group.Name = dialog.Value;
                 UnitOfWork?.GetRepository<Group>()?.Insert( group );
 
-                AddMemberNode( groupsTreeView.Nodes, group );
-            }
+                var node = AddMemberNode( groupsTreeView.Nodes, group );
 
+                Executor.Execute( new MacroCommand(
+                    new CreateCommand( group),
+                    new InsertTreeNodeCommand( groupsTreeView.Nodes, node ) ) );
+            }
         }
 
         private TreeNode? SelectedNode { get; set; }
@@ -127,17 +135,10 @@ namespace Members.App
         private void OnSelectNode( object sender, TreeViewEventArgs e )
         {
             if ( SelectedNode == e.Node ) return;
-
-            //if ( SelectedNode != null )
-            //{
-            //    SelectedNode.TreeView.SelectedNode = null;
-            //}
             SelectedNode = e.Node;
-            //if ( SelectedNode != null )
-            //{
-            //    SelectedNode.TreeView.SelectedNode = SelectedNode;
-            //}
-            editToolStripMenuItem.Enabled = SelectedNode != null;
+
+              editToolStripButton.Enabled = SelectedNode != null;
+            deleteToolStripButton.Enabled = SelectedNode != null;
         }
 
         private void OnEdit( object sender, EventArgs e )
@@ -148,7 +149,7 @@ namespace Members.App
             var dialog = new PromptForm( "Edit Name", "Name", member.Name );
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
-                CommandManager.Execute( new RenameCommand( member, dialog.Value ) );
+                Executor.Execute( new RenameMemberCommand( member, dialog.Value ) );
             }
         }
 
@@ -160,10 +161,11 @@ namespace Members.App
             var group  = groupsTreeView.SelectedNode?.Tag as Group;
             if ( group == null ) return;
 
-            CommandManager.Execute( new MacroCommand(
+            var node = AddMemberNode( groupsTreeView.SelectedNode.Nodes, person );
+
+            Executor.Execute( new MacroCommand(
                 new JoinGroupCommand( group, person ),
-                new InsertTreeNodeCommand( groupsTreeView.SelectedNode.Nodes, person ) 
-            ) );
+                new InsertTreeNodeCommand( groupsTreeView.SelectedNode.Nodes, node ) ) );
         }
 
         private void OnLeaveGroup( object sender, EventArgs e )
@@ -174,10 +176,9 @@ namespace Members.App
             var group = groupsTreeView.SelectedNode?.Parent.Tag as Group;
             Debug.Assert( group != null, "group != null" );
 
-            CommandManager.Execute( new MacroCommand(
+            Executor.Execute( new MacroCommand(
                 new RemoveTreeNodeCommand( groupsTreeView.SelectedNode ),
-                new LeaveGroupCommand( group, person ) 
-            ) );   
+                new LeaveGroupCommand( group, person ) ) );   
         }
     }
 }

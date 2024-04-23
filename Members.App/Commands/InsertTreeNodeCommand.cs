@@ -5,12 +5,12 @@ namespace Members.App.Commands
 {
     internal class InsertTreeNodeCommand : ICommand
     {
-        public InsertTreeNodeCommand( TreeNodeCollection nodes, Member member )
+        public InsertTreeNodeCommand( TreeNodeCollection nodes, TreeNode node )
         {
             Nodes = nodes;
+            Node  = node;
 
-            Node = new TreeNode( member.Name );
-            Node.ImageKey = Node.SelectedImageKey = member.GetType().Name;
+            Node.Remove();
         }
 
         public TreeNodeCollection Nodes { get; set; }

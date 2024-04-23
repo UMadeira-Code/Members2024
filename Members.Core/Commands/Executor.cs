@@ -1,6 +1,6 @@
 ﻿namespace Members.Core.Commands
 {
-    public class CommandManager :  ICommandManager
+    public class Executor :  IExecutor
     {
         private IList<ICommand> Commands { get; } = new List<ICommand>();
 
