@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using Members.App.Commands;
 using Members.App.Extensions;
 using Members.Core.Commands;
@@ -5,8 +7,6 @@ using Members.Core.Observables;
 using Members.Core.Repositories;
 using Members.Models.Commands;
 using Members.Shared.Data.Entities;
-using System;
-using System.Diagnostics;
 
 namespace Members.App
 {
