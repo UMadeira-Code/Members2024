@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Members.Shared.Data.Configurations;
 
 namespace Members.Shared.Data
@@ -18,6 +19,7 @@ namespace Members.Shared.Data
             base.OnConfiguring( builder );
 
             builder
+                .LogTo( ( m ) => Trace.WriteLine( m ) )
                 .UseSqlServer(
                     @"data source=(LocalDb)\MSSQLLocalDB;" +
                     @"initial catalog=Members2024;" +

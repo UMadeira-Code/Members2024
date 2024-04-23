@@ -5,7 +5,7 @@ namespace Members.Core.Repositories
 {
     public interface IRepository<TEntity> where TEntity : Item
     {
-        IEnumerable<TEntity> GetAll();
+        IQueryable<TEntity> GetAll();
 
         TEntity? Create( params object?[]? args );
 

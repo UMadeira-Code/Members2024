@@ -7,6 +7,7 @@ using Members.Core.Observables;
 using Members.Core.Repositories;
 using Members.Models.Commands;
 using Members.Shared.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Members.App
 {
