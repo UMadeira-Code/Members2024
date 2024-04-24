@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Members.Core.Data;
+﻿using Members.Core.Data;
 using System.Linq.Expressions;
 
 namespace Members.Core.Repositories
 {
-    public class NullRepository<T> : IRepository<T> where T : Item
+    public sealed class NullRepository<T> : IRepository<T> where T : Item
     {
         public static NullRepository<T> Instance { get; } = new NullRepository<T>();
 
@@ -39,7 +33,7 @@ namespace Members.Core.Repositories
         {
         }
 
-        public void Ensure<TProperty>( T entity, Expression<Func<T, TProperty>> expression ) where TProperty : class
+        public void Ensure<TProperty>( T entity, Expression<Func<T, TProperty?>> expression ) where TProperty : class
         {
         }
 
@@ -49,6 +43,16 @@ namespace Members.Core.Repositories
 
         public void Ensure<TProperty>( T entity, Expression<Func<T, ICollection<TProperty>>> expression ) where TProperty : class
         {
+        }
+
+        public Task<IEnumerable<T>> GetAllAsync()
+        {
+            return Task.FromResult( Enumerable.Empty<T>() );
+        }
+
+        public Task InsertAsync( T item )
+        {
+            return Task.CompletedTask;
         }
     }
 }

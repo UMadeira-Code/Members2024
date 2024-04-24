@@ -2,7 +2,6 @@
 using Members.Core.Data;
 using Members.Core.Repositories;
 using System.Linq.Expressions;
-using System.Diagnostics;
 
 namespace Members.Shared.Data
 {
@@ -47,7 +46,7 @@ namespace Members.Shared.Data
             Context.Remove(item);
         }
 
-        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty>> expression ) where TProperty : class
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty?>> expression ) where TProperty : class
         {
             Context.Entry( entity ).Reference( expression ).Load();
         }

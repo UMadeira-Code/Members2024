@@ -79,6 +79,7 @@
             peopleTreeView = new TreeView();
             imageList = new ImageList( components );
             groupsTreeView = new TreeView();
+            toolStripButton1 = new ToolStripButton();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
             statusStrip.SuspendLayout();
@@ -299,7 +300,7 @@
             // toolStrip
             // 
             toolStrip.ImageScalingSize = new Size( 28, 28 );
-            toolStrip.Items.AddRange( new ToolStripItem[ ] { saveToolStripButton, toolStripSeparator6, personToolStripButton, groupToolStripButton, toolStripSeparator7, undoToolStripButton, redoToolStripButton, toolStripSeparator8, editToolStripButton, deleteToolStripButton } );
+            toolStrip.Items.AddRange( new ToolStripItem[ ] { toolStripButton1, saveToolStripButton, toolStripSeparator6, personToolStripButton, groupToolStripButton, toolStripSeparator7, undoToolStripButton, redoToolStripButton, toolStripSeparator8, editToolStripButton, deleteToolStripButton } );
             toolStrip.Location = new Point( 0, 24 );
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size( 797, 35 );
@@ -497,6 +498,16 @@
             groupsTreeView.TabIndex = 3;
             groupsTreeView.AfterSelect +=  OnSelectNode ;
             // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton1.Image = (Image) resources.GetObject( "toolStripButton1.Image" );
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size( 32, 32 );
+            toolStripButton1.Text = "toolStripButton1";
+            toolStripButton1.Click +=  OnLoad ;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF( 7F, 15F );
@@ -572,5 +583,6 @@
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripButton undoToolStripButton;
         private ToolStripButton redoToolStripButton;
+        private ToolStripButton toolStripButton1;
     }
 }

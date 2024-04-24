@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
-using Members.Core.Data;
+﻿using Members.Core.Data;
 using Members.Core.Repositories;
 
 namespace Members.Shared.Data
@@ -9,13 +6,14 @@ namespace Members.Shared.Data
     public class UnitOfWorkAsync : UnitOfWork, IUnitOfWorkAsync
     {
         public UnitOfWorkAsync(MembersContext context, IFactory factory)
-            : base(context, factory)
+            : base( context, factory )
         {
         }
 
-        public IRepositoryAsync<TEntity>? GetRepositoryAsync<TEntity>() where TEntity : Item
+        public IRepositoryAsync<TEntity> GetRepositoryAsync<TEntity>() where TEntity : Item
         {
-            return GetRepository<TEntity>() as IRepositoryAsync<TEntity>;
+            return GetRepository<TEntity>() as IRepositoryAsync<TEntity> ??
+                   NullRepositoryAsync<TEntity>.Instance;
         }
 
         public async Task SaveChangesAsync()
@@ -23,7 +21,7 @@ namespace Members.Shared.Data
             await Context.SaveChangesAsync();
         }
 
-        protected override IRepository<TEntity>? CreateRepository<TEntity>()
+        protected override IRepository<TEntity> CreateRepository<TEntity>()
         {
             return new RepositoryAsync<TEntity>( Factory, Context);
         }

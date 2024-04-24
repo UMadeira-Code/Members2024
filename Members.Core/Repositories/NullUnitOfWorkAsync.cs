@@ -2,11 +2,11 @@
 
 namespace Members.Core.Repositories
 {
-    public sealed class NullUnitOfWork : IUnitOfWork
+    public sealed class NullUnitOfWorkAsync : IUnitOfWorkAsync
     {
-        public static NullUnitOfWork Instance { get; } = new NullUnitOfWork();
+        public static NullUnitOfWorkAsync Instance { get; } = new NullUnitOfWorkAsync();
 
-        private NullUnitOfWork()
+        private NullUnitOfWorkAsync()
         {
         }
 
@@ -33,6 +33,16 @@ namespace Members.Core.Repositories
 
         public void SaveChanges()
         {
+        }
+
+        public IRepositoryAsync<TEntity> GetRepositoryAsync<TEntity>() where TEntity : Item
+        {
+            return NullRepositoryAsync<TEntity>.Instance;
+        }
+
+        public Task SaveChangesAsync()
+        {
+            return Task.CompletedTask;
         }
     }
 }

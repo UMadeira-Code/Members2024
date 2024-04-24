@@ -33,6 +33,7 @@ namespace Members.App
                 options => options.UseSqlServer( config.GetConnectionString( "Members" ) ) );
             services.AddSingleton<IFactory>( sp => new Factory( types ) );
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUnitOfWorkAsync, UnitOfWorkAsync>();
             services.AddSingleton<IExecutor, ObservableExecutor>();
             services.AddTransient<MainForm>();
             var serviceProvider = services.BuildServiceProvider();

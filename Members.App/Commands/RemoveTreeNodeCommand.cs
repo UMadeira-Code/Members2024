@@ -13,8 +13,8 @@ namespace Members.App.Commands
         private TreeNodeCollection Nodes { get; set; }
         private TreeNode           Node  { get; set; }
 
-        public void Do()   => Node.Remove();
-        public void Undo() => Nodes.Add( Node );
+        public void Do()   => Node?.Remove();
+        public void Undo() => Nodes?.Add( Node );
         public void Redo() => Do();
         public void Cancel() { }
     }

@@ -13,20 +13,18 @@ namespace Members.App
 {
     public partial class MainForm : Form
     {
-        public MainForm( IUnitOfWork unitOfWork, IExecutor executor )
+        public MainForm( IUnitOfWorkAsync unitOfWork, IExecutor executor )
         {
             UnitOfWork = unitOfWork;
-            Executor   = executor;
+            Executor = executor;
 
             InitializeComponent();
             InitializeCommands( executor );
             InitializeSelections();
-
-            LoadData();
         }
 
-        IUnitOfWork UnitOfWork { get; } = NullUnitOfWork.Instance;
-        IExecutor   Executor   { get; }
+        IUnitOfWorkAsync UnitOfWork { get; } = NullUnitOfWorkAsync.Instance;
+        IExecutor        Executor   { get; }
 
         private void InitializeCommands( IExecutor executor )
         {
@@ -72,20 +70,28 @@ namespace Members.App
             Application.Exit();
         }
 
+        private async void OnLoad( object sender, EventArgs e )
+        {
+            await LoadData();
+        }
+
         private void OnSave( object sender, EventArgs e )
         {
             UnitOfWork?.SaveChanges();
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
-            foreach ( var person in UnitOfWork.GetRepository<Person>().GetAll() )
+            var people = await UnitOfWork.GetRepositoryAsync<Person>().GetAllAsync();
+            foreach ( var person in people )
             {
                 AddMemberNode( peopleTreeView.Nodes, person );
             }
 
-            foreach ( var group in UnitOfWork.GetRepository<Group>().GetAll().Ensure( e => e.Members ) )
+            var groups = await UnitOfWork.GetRepositoryAsync<Group>().GetAllAsync();
+            foreach ( var group in groups )
             {
+                // UnitOfWork.GetRepository<Group>().GetAll().Ensure( e => e.Members )
                 //UnitOfWork.GetRepository<Group>().Ensure( group, g => g.Members );
 
                 var node = AddMemberNode(groupsTreeView.Nodes, group);
@@ -121,8 +127,8 @@ namespace Members.App
 
                 var node = AddMemberNode( peopleTreeView.Nodes, person );
 
-                Executor.Execute( new MacroCommand( 
-                    new CreateCommand( person ), 
+                Executor.Execute( new MacroCommand(
+                    new CreateCommand( person ),
                     new InsertTreeNodeCommand( peopleTreeView.Nodes, node ) ) );
             }
         }
@@ -142,7 +148,7 @@ namespace Members.App
                 var node = AddMemberNode( groupsTreeView.Nodes, group );
 
                 Executor.Execute( new MacroCommand(
-                    new CreateCommand( group),
+                    new CreateCommand( group ),
                     new InsertTreeNodeCommand( groupsTreeView.Nodes, node ) ) );
             }
         }
@@ -154,7 +160,7 @@ namespace Members.App
             if ( SelectedNode == e.Node ) return;
             SelectedNode = e.Node;
 
-              editToolStripButton.Enabled = SelectedNode != null;
+            editToolStripButton.Enabled = SelectedNode != null;
             deleteToolStripButton.Enabled = SelectedNode != null;
         }
 
@@ -191,11 +197,11 @@ namespace Members.App
             if ( person == null ) return;
 
             var group = groupsTreeView.SelectedNode?.Parent.Tag as Group;
-            Debug.Assert( group != null, "group != null" );
+            if ( group == null ) return;
 
             Executor.Execute( new MacroCommand(
                 new RemoveTreeNodeCommand( groupsTreeView.SelectedNode ),
-                new LeaveGroupCommand( group, person ) ) );   
+                new LeaveGroupCommand( group, person ) ) );
         }
     }
 }

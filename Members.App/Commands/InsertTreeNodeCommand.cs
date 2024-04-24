@@ -1,5 +1,4 @@
 ﻿using Members.Core.Commands;
-using Members.Shared.Data.Entities;
 
 namespace Members.App.Commands
 {

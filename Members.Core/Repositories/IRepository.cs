@@ -13,7 +13,7 @@ namespace Members.Core.Repositories
         void Update( TEntity item );
         void Delete( TEntity item );
 
-        void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty>> expression ) where TProperty : class;
+        void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty?>> expression ) where TProperty : class;
         void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression ) where TProperty : class;
         void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, ICollection<TProperty>>> expression ) where TProperty : class;
     }
