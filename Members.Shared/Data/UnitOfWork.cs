@@ -41,20 +41,22 @@ namespace Members.Shared.Data
             Context.SaveChanges();
         }
 
-        private IDictionary<Type, dynamic> Repositories { get; } = new Dictionary<Type, dynamic>();
+        private IDictionary<Type, object> Repositories { get; } = new Dictionary<Type, object>();
 
-        public IRepository<TEntity>? GetRepository<TEntity>() where TEntity : Item
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Item
         {
             if ( Repositories.ContainsKey( typeof( TEntity ) ) )
-                return Repositories[typeof( TEntity )] as IRepository<TEntity>;
+                return Repositories[typeof( TEntity )] as IRepository<TEntity> ?? 
+                       NullRepository<TEntity>.Instance;
 
             var repository = CreateRepository<TEntity>();
             if ( repository != null ) Repositories.Add( typeof( TEntity ), repository );
 
-            return repository;
+            return repository ?? 
+                   NullRepository<TEntity>.Instance;
         }
 
-        protected virtual IRepository<TEntity>? CreateRepository<TEntity>() where TEntity : Item
+        protected virtual IRepository<TEntity> CreateRepository<TEntity>() where TEntity : Item
         {
             return new Repository<TEntity>( Factory, Context );
         }

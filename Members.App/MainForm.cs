@@ -7,6 +7,7 @@ using Members.Core.Observables;
 using Members.Core.Repositories;
 using Members.Models.Commands;
 using Members.Shared.Data.Entities;
+using Members.Shared.Data.Extensions;
 
 namespace Members.App
 {
@@ -24,7 +25,7 @@ namespace Members.App
             LoadData();
         }
 
-        IUnitOfWork UnitOfWork { get; }
+        IUnitOfWork UnitOfWork { get; } = NullUnitOfWork.Instance;
         IExecutor   Executor   { get; }
 
         private void InitializeCommands( IExecutor executor )
@@ -66,7 +67,6 @@ namespace Members.App
                 leaveButton.Enabled = groupsTreeView.HasSelectedNodeOfType<Person>();
         }
 
-
         private void OnExit( object sender, EventArgs e )
         {
             Application.Exit();
@@ -84,9 +84,9 @@ namespace Members.App
                 AddMemberNode( peopleTreeView.Nodes, person );
             }
 
-            foreach ( var group in UnitOfWork.GetRepository<Group>().GetAll() )
+            foreach ( var group in UnitOfWork.GetRepository<Group>().GetAll().Ensure( e => e.Members ) )
             {
-                UnitOfWork.GetRepository<Group>().Ensure( group, g => g.Members );
+                //UnitOfWork.GetRepository<Group>().Ensure( group, g => g.Members );
 
                 var node = AddMemberNode(groupsTreeView.Nodes, group);
                 foreach ( var person in group.Members )
@@ -109,7 +109,7 @@ namespace Members.App
 
         private void OnAddPerson( object sender, EventArgs e )
         {
-            var dialog = new PromptForm( "Create Person", "Name:" );
+            var dialog = new PromptDialog( "Create Person", "Name:" );
 
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
@@ -129,7 +129,7 @@ namespace Members.App
 
         private void OnAddGroup( object sender, EventArgs e )
         {
-            var dialog = new PromptForm( "Create Group", "Name:" );
+            var dialog = new PromptDialog( "Create Group", "Name:" );
 
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
@@ -163,7 +163,7 @@ namespace Members.App
             var member = SelectedNode?.GetSemantic<Member>();
             if ( member == null ) return;
 
-            var dialog = new PromptForm( "Edit Name", "Name", member.Name );
+            var dialog = new PromptDialog( "Edit Name", "Name", member.Name );
             if ( dialog.ShowDialog( this ) == DialogResult.OK )
             {
                 Executor.Execute( new RenameMemberCommand( member, dialog.Value ) );

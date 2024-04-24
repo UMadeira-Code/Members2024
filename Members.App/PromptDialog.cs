@@ -1,12 +1,12 @@
 ﻿namespace Members.App
 {
-    public partial class PromptForm : Form
+    public partial class PromptDialog : Form
     {
-        public PromptForm() : this( "Prompt Dialog", "Value:", string.Empty )
+        public PromptDialog() : this( "Prompt Dialog", "Value:", string.Empty )
         {
         }
 
-        public PromptForm( string title, string label, string value = "" )
+        public PromptDialog( string title, string label, string value = "" )
         {
             InitializeComponent();
 

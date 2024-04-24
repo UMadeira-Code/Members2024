@@ -2,9 +2,9 @@
 
 namespace Members.App.Commands
 {
-    public class SelectTreeNode : ICommand
+    public class SelectTreeNodeCommand : ICommand
     {
-        public SelectTreeNode( TreeNode node )
+        public SelectTreeNodeCommand( TreeNode node )
         {
             Node = node;
             View = node.TreeView;

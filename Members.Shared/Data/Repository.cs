@@ -17,7 +17,7 @@ namespace Members.Shared.Data
         protected IFactory  Factory { get; set; }
         protected DbContext Context { get; set; }
 
-        public IEnumerable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
             return Context.Set<TEntity>();
         }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Members.Shared", "Members.Shared\Members.Shared.csproj", "{ED170806-B313-45AC-9ED2-67EABEBB2461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.Shared", "Members.Shared\Members.Shared.csproj", "{ED170806-B313-45AC-9ED2-67EABEBB2461}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Members.App", "Members.App\Members.App.csproj", "{7796966A-075E-49FF-B43C-DE3BCD325CB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.App", "Members.App\Members.App.csproj", "{7796966A-075E-49FF-B43C-DE3BCD325CB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Members.Core", "Members.Core\Members.Core.csproj", "{841B0BB3-7A61-4EDC-A9F4-52EA02F33AFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.Core", "Members.Core\Members.Core.csproj", "{841B0BB3-7A61-4EDC-A9F4-52EA02F33AFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
