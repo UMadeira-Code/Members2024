@@ -72,7 +72,7 @@ namespace Members.App
 
         private async void OnLoad( object sender, EventArgs e )
         {
-            await LoadData();
+            LoadData();
         }
 
         private void OnSave( object sender, EventArgs e )
@@ -80,7 +80,28 @@ namespace Members.App
             UnitOfWork?.SaveChanges();
         }
 
-        private async Task LoadData()
+        private void LoadData()
+        {
+            var people = UnitOfWork.GetRepositoryAsync<Person>().GetAll();
+            foreach ( var person in people )
+            {
+                AddMemberNode( peopleTreeView.Nodes, person );
+            }
+
+            var groups = UnitOfWork.GetRepository<Group>().GetAll().Ensure( e => e.Members );
+            foreach ( var group in groups )
+            {
+                //UnitOfWork.GetRepositoryAsync<Group>().Ensure( group, g => g.Members );
+
+                var node = AddMemberNode(groupsTreeView.Nodes, group);
+                foreach ( var person in group.Members )
+                {
+                    AddMemberNode( node.Nodes, person );
+                }
+            }
+        }
+
+        private async Task LoadDataAsync()
         {
             var people = await UnitOfWork.GetRepositoryAsync<Person>().GetAllAsync();
             foreach ( var person in people )
@@ -89,10 +110,12 @@ namespace Members.App
             }
 
             var groups = await UnitOfWork.GetRepositoryAsync<Group>().GetAllAsync();
+            groups.AsQueryable().Ensure( e => e.Members );
+
             foreach ( var group in groups )
             {
                 // UnitOfWork.GetRepository<Group>().GetAll().Ensure( e => e.Members )
-                //UnitOfWork.GetRepository<Group>().Ensure( group, g => g.Members );
+                UnitOfWork.GetRepositoryAsync<Group>().Ensure( group, g => g.Members );
 
                 var node = AddMemberNode(groupsTreeView.Nodes, group);
                 foreach ( var person in group.Members )
@@ -196,8 +219,10 @@ namespace Members.App
             var person = groupsTreeView.GetSelectedSemantic<Person>();
             if ( person == null ) return;
 
-            var group = groupsTreeView.SelectedNode?.Parent.Tag as Group;
+            var group = groupsTreeView.SelectedNode?.Parent.GetSemantic<Group>();
             if ( group == null ) return;
+
+            if ( groupsTreeView.SelectedNode == null ) return;
 
             Executor.Execute( new MacroCommand(
                 new RemoveTreeNodeCommand( groupsTreeView.SelectedNode ),
