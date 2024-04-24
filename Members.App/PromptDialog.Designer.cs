@@ -1,6 +1,6 @@
 ﻿namespace Members.App
 {
-    partial class PromptForm
+    partial class PromptDialog
     {
         /// <summary>
         /// Required designer variable.
