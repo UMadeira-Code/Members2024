@@ -10,10 +10,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.Core", "Members.Core\Members.Core.csproj", "{841B0BB3-7A61-4EDC-A9F4-52EA02F33AFD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.Server", "Members.Server\Members.Server.csproj", "{4A9F5E1F-3FF6-43B3-BEDB-71136B05D81A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AAD76F47-0057-45F7-A87D-EBD184157571} = {AAD76F47-0057-45F7-A87D-EBD184157571}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.Client", "Members.Client\Members.Client.csproj", "{AAD76F47-0057-45F7-A87D-EBD184157571}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Members.Domain", "Members.Domain\Members.Domain.csproj", "{C6566677-D159-4D37-977F-58E5081CFD4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Members.Domain", "Members.Domain\Members.Domain.csproj", "{C6566677-D159-4D37-977F-58E5081CFD4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
