@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace Members.Shared.Data.Configurations
+namespace Members.Domain.Data.Configurations
 {
     internal class ItemConfig<T> : IEntityTypeConfiguration<T> where T : Item
     {

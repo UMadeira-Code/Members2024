@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Members.Core.Data;
 using Members.Core.Repositories;
 
-namespace Members.Shared.Data
+namespace Members.Domain.Data
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
@@ -14,7 +14,7 @@ namespace Members.Shared.Data
             Factory = factory;
         }
 
-        public    IFactory  Factory { get; }
+        public IFactory Factory { get; }
         protected DbContext Context { get; }
 
         private IDbContextTransaction? Transaction { get; set; }
@@ -46,13 +46,13 @@ namespace Members.Shared.Data
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Item
         {
             if ( Repositories.ContainsKey( typeof( TEntity ) ) )
-                return Repositories[typeof( TEntity )] as IRepository<TEntity> ?? 
+                return Repositories[typeof( TEntity )] as IRepository<TEntity> ??
                        NullRepository<TEntity>.Instance;
 
             var repository = CreateRepository<TEntity>();
             if ( repository != null ) Repositories.Add( typeof( TEntity ), repository );
 
-            return repository ?? 
+            return repository ??
                    NullRepository<TEntity>.Instance;
         }
 

@@ -1,18 +1,18 @@
 ﻿using Members.Core.Commands;
-using Members.Shared.Data.Entities;
+using Members.Domain.Data.Entities;
 
-namespace Members.Models.Commands
+namespace Members.Domain.Data.Commands
 {
     public class RenameMemberCommand : ICommand
     {
-        public RenameMemberCommand( Member member, string name ) 
+        public RenameMemberCommand( Member member, string name )
         {
             Member = member;
-            Name   = name;
+            Name = name;
         }
 
         private Member Member { get; set; }
-        private string Name   { get; set; }
+        private string Name { get; set; }
 
         public void Do()
         {

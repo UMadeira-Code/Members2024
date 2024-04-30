@@ -1,12 +1,12 @@
 ﻿using Members.Core.Commands;
 using Members.Core.Data;
 
-namespace Members.Models.Commands
+namespace Members.Domain.Data.Commands
 {
     public class CreateCommand : ICommand
     {
-        public CreateCommand( Item item ) 
-        { 
+        public CreateCommand( Item item )
+        {
             Item = item;
         }
 
@@ -24,6 +24,6 @@ namespace Members.Models.Commands
 
         public void Redo() => Do();
 
-        public void Cancel() {}
+        public void Cancel() { }
     }
 }

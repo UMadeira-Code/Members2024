@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 using Members.Core.Repositories;
-using Members.Shared.Data;
-using Members.Shared.Data.Entities;
+using Members.Domain.Data;
+using Members.Domain.Data.Entities;
 using Members.Core.Commands;
 
 namespace Members.App

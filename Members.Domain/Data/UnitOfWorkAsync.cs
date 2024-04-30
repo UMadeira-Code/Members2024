@@ -1,11 +1,11 @@
 ﻿using Members.Core.Data;
 using Members.Core.Repositories;
 
-namespace Members.Shared.Data
+namespace Members.Domain.Data
 {
     public class UnitOfWorkAsync : UnitOfWork, IUnitOfWorkAsync
     {
-        public UnitOfWorkAsync(MembersContext context, IFactory factory)
+        public UnitOfWorkAsync( MembersContext context, IFactory factory )
             : base( context, factory )
         {
         }
@@ -23,7 +23,7 @@ namespace Members.Shared.Data
 
         protected override IRepository<TEntity> CreateRepository<TEntity>()
         {
-            return new RepositoryAsync<TEntity>( Factory, Context);
+            return new RepositoryAsync<TEntity>( Factory, Context );
         }
 
     }

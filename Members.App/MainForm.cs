@@ -5,9 +5,9 @@ using Members.App.Extensions;
 using Members.Core.Commands;
 using Members.Core.Observables;
 using Members.Core.Repositories;
-using Members.Models.Commands;
-using Members.Shared.Data.Entities;
-using Members.Shared.Data.Extensions;
+using Members.Domain.Data.Commands;
+using Members.Domain.Data.Entities;
+using Members.Domain.Data.Extensions;
 
 namespace Members.App
 {

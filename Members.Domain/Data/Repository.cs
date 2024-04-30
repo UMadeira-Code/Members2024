@@ -3,7 +3,7 @@ using Members.Core.Data;
 using Members.Core.Repositories;
 using System.Linq.Expressions;
 
-namespace Members.Shared.Data
+namespace Members.Domain.Data
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Item
     {
@@ -13,7 +13,7 @@ namespace Members.Shared.Data
             Context = context;
         }
 
-        protected IFactory  Factory { get; set; }
+        protected IFactory Factory { get; set; }
         protected DbContext Context { get; set; }
 
         public IQueryable<TEntity> GetAll()
@@ -21,29 +21,29 @@ namespace Members.Shared.Data
             return Context.Set<TEntity>();
         }
 
-        public TEntity? Get( int id ) 
+        public TEntity? Get( int id )
         {
             return Context.Set<TEntity>()?.FirstOrDefault( x => x.Id == id );
         }
 
-        public TEntity? Create( params object?[]? args )
+        public TEntity? Create( params object?[ ]? args )
         {
             return Factory.Create<TEntity>( args );
         }
 
-        public void Insert(TEntity item)
+        public void Insert( TEntity item )
         {
-            Context.Set<TEntity>().Add(item);
+            Context.Set<TEntity>().Add( item );
         }
 
-        public void Update(TEntity item)
+        public void Update( TEntity item )
         {
-            Context.Entry(item).State = EntityState.Modified;
+            Context.Entry( item ).State = EntityState.Modified;
         }
 
-        public void Delete(TEntity item)
+        public void Delete( TEntity item )
         {
-            Context.Remove(item);
+            Context.Remove( item );
         }
 
         public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty?>> expression ) where TProperty : class
@@ -60,7 +60,7 @@ namespace Members.Shared.Data
         {
             var parameter = expression.Parameters[0];
             var body = Expression.Convert( expression.Body, typeof( IEnumerable<TProperty> ) );
-            Context.Entry( entity ).Collection( 
+            Context.Entry( entity ).Collection(
                 Expression.Lambda<Func<TEntity, IEnumerable<TProperty>>>( body, parameter ) ).Load();
         }
     }

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Members.Shared.Data.Configurations;
+using Members.Domain.Data.Configurations;
 
-namespace Members.Shared.Data
+namespace Members.Domain.Data
 {
     public class MembersContext : DbContext
     {
