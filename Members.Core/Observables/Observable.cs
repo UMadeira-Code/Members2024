@@ -1,6 +1,6 @@
 ﻿namespace Members.Core.Observables
 {
-    public class Observable : IObservable
+    public class Observable : IObservable, IDisposable
     {
         public event EventHandler? Notify;
 
@@ -8,5 +8,7 @@
         {
             Notify?.Invoke( this, args ?? EventArgs.Empty );
         }
+
+        public void Dispose() => Notify = null;
     }
 }
