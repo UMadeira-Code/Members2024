@@ -19,10 +19,17 @@ namespace Members.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped( sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient( "Members.ServerAPI" ) );
 
+            //builder.Services.AddMsalAuthentication( options => {
+            //    builder.Configuration.Bind( "AzureAd", options.ProviderOptions.Authentication );
+            //    options.ProviderOptions.DefaultAccessTokenScopes.Add( "api://api.id.uri/access_as_user" );
+            //} );
+
             builder.Services.AddMsalAuthentication( options => {
                 builder.Configuration.Bind( "AzureAd", options.ProviderOptions.Authentication );
-                options.ProviderOptions.DefaultAccessTokenScopes.Add( "api://api.id.uri/access_as_user" );
+                options.ProviderOptions.DefaultAccessTokenScopes.Add( "api://a6ecd99c-5d8c-419e-9fcf-30f6369d9443/Members.Read" );
+                options.ProviderOptions.AdditionalScopesToConsent.Add( "https://graph.microsoft.com/User.Read" );
             } );
+
 
             await builder.Build().RunAsync();
         }
