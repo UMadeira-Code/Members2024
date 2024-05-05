@@ -26,7 +26,7 @@ namespace Members.Client
 
             builder.Services.AddMsalAuthentication( options => {
                 builder.Configuration.Bind( "AzureAd", options.ProviderOptions.Authentication );
-                options.ProviderOptions.DefaultAccessTokenScopes.Add( "api://a6ecd99c-5d8c-419e-9fcf-30f6369d9443/Members.Read" );
+                options.ProviderOptions.DefaultAccessTokenScopes.Add( "api://e4e16625-e73c-4d86-b262-c9d9936ed0be/Members.Read" );
                 options.ProviderOptions.AdditionalScopesToConsent.Add( "https://graph.microsoft.com/User.Read" );
             } );
 
