@@ -18,16 +18,10 @@ namespace Members
                 .AddMicrosoftIdentityWebApi( builder.Configuration.GetSection( "AzureAd" ) );
 
             builder.Services.AddCors( options => {
-                options.AddPolicy( name: "MembersCorsPolicy",
-                    policy => {
-                        policy.WithOrigins( "https://localhost:7204" ); // Members2024
-                    } );
-                options.AddPolicy( name: "AllowEveryonePolicy",
-                    policy => {
-                        policy.AllowAnyOrigin()
-                              .AllowAnyHeader()
-                              .AllowAnyMethod();
-                    } );
+                options.AddPolicy( name: "MembersCorsPolicy", policy => 
+                    { policy.WithOrigins( "https://localhost:7204" ); } );
+                options.AddPolicy( name: "AllowEveryonePolicy", policy => 
+                    { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); } );
             } );
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
@@ -46,7 +40,8 @@ namespace Members
             else
             {
                 app.UseExceptionHandler( "/Error" );
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // The default HSTS value is 30 days. You may want to change this
+                // for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -60,9 +55,6 @@ namespace Members
             app.MapRazorPages();
             app.MapControllers();
             app.MapFallbackToFile( "index.html" );
-
-            IdentityModelEventSource.ShowPII = true;
-            IdentityModelEventSource.LogCompleteSecurityArtifact = true;
 
             app.Run();
         }

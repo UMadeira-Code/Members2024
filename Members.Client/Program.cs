@@ -2,6 +2,7 @@ using Members.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 
 namespace Members.Client
 {
@@ -30,6 +31,7 @@ namespace Members.Client
                 options.ProviderOptions.AdditionalScopesToConsent.Add( "https://graph.microsoft.com/User.Read" );
             } );
 
+            builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();
         }

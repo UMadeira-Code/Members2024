@@ -1,18 +1,47 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudAppBar Color="Color.Primary" Fixed="false" Elevation="4" Dense="true">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
+    <MudText>Members</MudText>
+    <MudSpacer />
+    <AuthorizeView>
+        <NotAuthorized>
+            <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" OnClick="BeginLogIn" />
+        </NotAuthorized>
+        <Authorized>
+            <MudText>@context.User.Identity?.Name</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="BeginLogOut" />
+        </Authorized>
+    </AuthorizeView>
+</MudAppBar>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4 auth">
-            <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+
+@code {
+    public void BeginLogIn()
+    {
+        Navigation.NavigateToLogout( "authentication/login" );
+    }
+
+    public void BeginLogOut()
+    {
+        Navigation.NavigateToLogout( "authentication/logout" );
+    }
+}
+
+

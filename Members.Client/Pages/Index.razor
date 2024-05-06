@@ -1,9 +1,30 @@
 ﻿@page "/"
 
+
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<AuthorizeView>
+    <NotAuthorized>
+        <h2>Welcome to Members application.</h2>
+        Please, <a href="authentication/login">Log in</a> to start using Members application.
+    </NotAuthorized>
+    <Authorized>
+        <MudPaper Elevation="25">
+            <MudToolBar>
+                <MudIconButton Icon="@Icons.Material.Filled.Dataset" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Inherit" />
+                <MudDivider Vertical="true" FlexItem="false" />
+                <MudIconButton Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.GroupAdd" Color="Color.Inherit" />
+                <MudDivider Vertical="true" FlexItem="true" />
+                <MudIconButton Icon="@Icons.Material.Filled.Undo" />
+                <MudIconButton Icon="@Icons.Material.Filled.Redo" />
+                <MudDivider Vertical="true" FlexItem="true" />
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Inherit" />
+                <MudSpacer />
+            </MudToolBar>
+        </MudPaper>
+    </Authorized>
+</AuthorizeView>

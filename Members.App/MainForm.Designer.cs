@@ -61,6 +61,7 @@
             toolStripSeparator5 = new ToolStripSeparator();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             toolStrip = new ToolStrip();
+            loadToolStripButton = new ToolStripButton();
             saveToolStripButton = new ToolStripButton();
             toolStripSeparator6 = new ToolStripSeparator();
             personToolStripButton = new ToolStripButton();
@@ -79,7 +80,6 @@
             peopleTreeView = new TreeView();
             imageList = new ImageList( components );
             groupsTreeView = new TreeView();
-            toolStripButton1 = new ToolStripButton();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
             statusStrip.SuspendLayout();
@@ -300,12 +300,22 @@
             // toolStrip
             // 
             toolStrip.ImageScalingSize = new Size( 28, 28 );
-            toolStrip.Items.AddRange( new ToolStripItem[ ] { toolStripButton1, saveToolStripButton, toolStripSeparator6, personToolStripButton, groupToolStripButton, toolStripSeparator7, undoToolStripButton, redoToolStripButton, toolStripSeparator8, editToolStripButton, deleteToolStripButton } );
+            toolStrip.Items.AddRange( new ToolStripItem[ ] { loadToolStripButton, saveToolStripButton, toolStripSeparator6, personToolStripButton, groupToolStripButton, toolStripSeparator7, undoToolStripButton, redoToolStripButton, toolStripSeparator8, editToolStripButton, deleteToolStripButton } );
             toolStrip.Location = new Point( 0, 24 );
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size( 797, 35 );
             toolStrip.TabIndex = 1;
             toolStrip.Text = "toolStrip1";
+            // 
+            // loadToolStripButton
+            // 
+            loadToolStripButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            loadToolStripButton.Image = (Image) resources.GetObject( "loadToolStripButton.Image" );
+            loadToolStripButton.ImageTransparentColor = Color.Magenta;
+            loadToolStripButton.Name = "loadToolStripButton";
+            loadToolStripButton.Size = new Size( 32, 32 );
+            loadToolStripButton.Text = "Load";
+            loadToolStripButton.Click +=  OnLoad ;
             // 
             // saveToolStripButton
             // 
@@ -498,16 +508,6 @@
             groupsTreeView.TabIndex = 3;
             groupsTreeView.AfterSelect +=  OnSelectNode ;
             // 
-            // toolStripButton1
-            // 
-            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton1.Image = (Image) resources.GetObject( "toolStripButton1.Image" );
-            toolStripButton1.ImageTransparentColor = Color.Magenta;
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size( 32, 32 );
-            toolStripButton1.Text = "toolStripButton1";
-            toolStripButton1.Click +=  OnLoad ;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF( 7F, 15F );
@@ -583,6 +583,6 @@
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripButton undoToolStripButton;
         private ToolStripButton redoToolStripButton;
-        private ToolStripButton toolStripButton1;
+        private ToolStripButton loadToolStripButton;
     }
 }

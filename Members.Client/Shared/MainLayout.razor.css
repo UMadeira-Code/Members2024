@@ -34,7 +34,12 @@ main {
     .top-row ::deep a:first-child {
         overflow: hidden;
         text-overflow: ellipsis;
+        margin-left: 0;
     }
+
+.navbar-brand {
+    justify-content: flex-start;
+}
 
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
@@ -70,7 +75,7 @@ main {
 
     .top-row.auth ::deep a:first-child {
         flex: 1;
-        text-align: right;
+        text-align: left;
         width: 0;
     }
 
