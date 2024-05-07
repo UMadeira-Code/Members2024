@@ -7,6 +7,8 @@ namespace Members.Core.Repositories
     {
         IQueryable<TEntity> GetAll();
 
+        TEntity? Get( int id );
+
         TEntity? Create( params object?[]? args );
 
         void Insert( TEntity item );

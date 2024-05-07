@@ -16,6 +16,11 @@ namespace Members.Core.Repositories
             return null;
         }
 
+        public T? Get( int id )
+        {
+            return null;
+        }
+
         public IQueryable<T> GetAll()
         {
             return Enumerable.Empty<T>().AsQueryable();

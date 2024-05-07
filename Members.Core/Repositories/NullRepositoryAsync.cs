@@ -9,6 +9,11 @@ namespace Members.Core.Repositories
 
         private NullRepositoryAsync() { }
 
+        public T? Get( int id )
+        {
+            return null;
+        }
+
         public T? Create( params object?[]? args )
         {
             return null;

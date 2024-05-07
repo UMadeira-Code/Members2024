@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Members.Core.Repositories;
+using Members.Domain.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Members.Server.Controllers
@@ -7,5 +9,27 @@ namespace Members.Server.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
+        private IUnitOfWork UnitOfWork { get; }
+
+        public PeopleController( IUnitOfWork unitOfWork )
+        {
+            UnitOfWork = unitOfWork;
+        }
+
+        [HttpGet]
+        public IEnumerable<Shared.Person>? Get()
+        {
+            return UnitOfWork.GetRepository<Person>().GetAll()
+                .Select( x => new Shared.Person( x.Id, x.Name ) );
+        }
+
+        [HttpGet( "{id}" )]
+        public Shared.Person? Get( int id )
+        {
+            var person = UnitOfWork.GetRepository<Person>().Get( id );
+            if ( person == null ) return null;
+
+            return new Shared.Person( person.Id, person.Name  );
+        }
     }
 }

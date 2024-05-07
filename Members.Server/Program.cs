@@ -1,8 +1,12 @@
+using Members.Core.Repositories;
+using Members.Domain.Data.Entities;
+using Members.Domain.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Members
 {
@@ -18,14 +22,25 @@ namespace Members
                 .AddMicrosoftIdentityWebApi( builder.Configuration.GetSection( "AzureAd" ) );
 
             builder.Services.AddCors( options => {
-                options.AddPolicy( name: "MembersCorsPolicy", policy => 
-                    { policy.WithOrigins( "https://localhost:7204" ); } );
-                options.AddPolicy( name: "AllowEveryonePolicy", policy => 
-                    { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); } );
+                options.AddPolicy( name: "MembersCorsPolicy", policy => { 
+                    policy.WithOrigins( "https://localhost:7204" ); } );
+                options.AddPolicy( name: "AllowEveryonePolicy", policy => { 
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); } );
             } );
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddSwaggerGen();
+
+            var types = new [] { typeof( Person ), typeof( Group ) };
+
+            var connection = builder.Configuration.GetConnectionString( "Members" );
+            builder.Services.AddDbContext<DbContext, MembersContext>(
+                options => options.UseSqlServer( connection ) );
+            builder.Services.AddScoped<IFactory>( sp => new Factory( types ) );
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync>();
+
 
             var app = builder.Build();
 
