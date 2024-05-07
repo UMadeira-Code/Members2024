@@ -5,7 +5,7 @@ namespace Members.Server.Controllers
 {
     [Route( "api/[controller]" )]
     [ApiController]
-    public class PeopleController : ControllerBase
+    public class GroupsController : ControllerBase
     {
     }
 }
