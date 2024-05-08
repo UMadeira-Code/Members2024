@@ -41,8 +41,13 @@ namespace Members.Server.Controllers
         [HttpGet( "{id}/Members" )]
         public async Task<IEnumerable<Shared.Person>> GetMembersAsync( int id )
         {
-            var group = await UnitOfWork?.GetRepositoryAsync<Group>()?.GetAsync( id );
-            return group?.Members?.Select( y => y.Map() ) ?? Enumerable.Empty<Shared.Person>();
+            var group = await UnitOfWork?.GetRepositoryAsync<Group>().GetAsync( id );
+            if ( group != null )
+            {
+                UnitOfWork?.GetRepositoryAsync<Group>().Ensure( group, g => g.Members );
+                return group.Members?.Select( y => y.Map() ) ?? Enumerable.Empty<Shared.Person>();
+            }
+            return Enumerable.Empty<Shared.Person>();
         }
     }
 }
