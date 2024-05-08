@@ -3,58 +3,63 @@ using Members.Core.Data;
 
 namespace Members.Core.Repositories
 {
-    public sealed class NullRepositoryAsync<T> : IRepositoryAsync<T> where T : Item
+    public sealed class NullRepositoryAsync<TEntity> : IRepositoryAsync<TEntity> where TEntity : Item
     {
-        public static NullRepositoryAsync<T> Instance { get; } = new NullRepositoryAsync<T>();
+        public static NullRepositoryAsync<TEntity> Instance { get; } = new NullRepositoryAsync<TEntity>();
 
         private NullRepositoryAsync() { }
 
-        public T? Get( int id )
+        public TEntity? Get( int id )
         {
             return null;
         }
 
-        public T? Create( params object?[]? args )
+        public TEntity? Create( params object?[]? args )
         {
             return null;
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
-            return Enumerable.Empty<T>().AsQueryable();
+            return Enumerable.Empty<TEntity>().AsQueryable();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
-        {
-            return Task.FromResult( Enumerable.Empty<T>() );
+        public async Task<TEntity?> GetAsync( int id )
+        { 
+            return await Task.FromResult( (TEntity?) null );
         }
 
-        public void Insert( T item )
+        public Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return Task.FromResult( Enumerable.Empty<TEntity>() );
+        }
+
+        public void Insert( TEntity item )
         {
         }
 
-        public Task InsertAsync( T item )
+        public Task InsertAsync( TEntity item )
         {
             return Task.FromResult(0);
         }
 
-        public void Update( T item )
+        public void Update( TEntity item )
         {
         }
 
-        public void Delete( T item )
+        public void Delete( TEntity item )
         {
         }
 
-        public void Ensure<TProperty>( T entity, Expression<Func<T, TProperty?>> expression ) where TProperty : class
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty?>> expression ) where TProperty : class
         {
         }
 
-        public void Ensure<TProperty>( T entity, Expression<Func<T, IEnumerable<TProperty>>> expression ) where TProperty : class
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression ) where TProperty : class
         {
         }
 
-        public void Ensure<TProperty>( T entity, Expression<Func<T, ICollection<TProperty>>> expression ) where TProperty : class
+        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, ICollection<TProperty>>> expression ) where TProperty : class
         {
         }
     }

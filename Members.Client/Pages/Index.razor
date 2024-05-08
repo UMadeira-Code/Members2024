@@ -1,8 +1,12 @@
 ﻿@page "/"
 
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject HttpClient Http
+@inject IAccessTokenProvider TokenProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Index</PageTitle>
-
 
 <AuthorizeView>
     <NotAuthorized>
@@ -32,13 +36,10 @@
                 <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
                     <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
                         <MudTreeView T="string">
-                            <MudTreeViewItem Value="@("Getting Started")">
-                                <MudTreeViewItem Value="@("Installation")" />
-                            </MudTreeViewItem>
-                            <MudTreeViewItem Value="@("Components")">
-                                <MudTreeViewItem Value="@("Avatar")" />
-                                <MudTreeViewItem Value="@("Button")" />
-                            </MudTreeViewItem>
+                            @foreach (var person in people)
+                            {
+                                <MudTreeViewItem Value="@person.Name" />
+                            }
                         </MudTreeView>
                     </MudPaper>
                 </MudContainer>
@@ -47,13 +48,15 @@
                 <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
                     <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-secondary">
                         <MudTreeView T="string">
-                            <MudTreeViewItem Value="@("Getting Started")">
-                                <MudTreeViewItem Value="@("Installation")" />
-                            </MudTreeViewItem>
-                            <MudTreeViewItem Value="@("Components")">
-                                <MudTreeViewItem Value="@("Avatar")" />
-                                <MudTreeViewItem Value="@("Button")" />
-                            </MudTreeViewItem>
+                            @foreach (var group in groups)
+                            {
+                                <MudTreeViewItem Value="@group.Name">
+                                @foreach (var member in GetMembers( group )  )
+                                {
+                                    <MudTreeViewItem Value="@member.Name" />
+                                }
+                                </MudTreeViewItem>
+                            }
                         </MudTreeView>
                     </MudPaper>
                 </MudContainer>

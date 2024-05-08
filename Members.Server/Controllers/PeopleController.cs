@@ -19,8 +19,8 @@ namespace Members.Server.Controllers
         [HttpGet]
         public IEnumerable<Shared.Person>? Get()
         {
-            return UnitOfWork.GetRepository<Person>().GetAll()
-                .Select( x => new Shared.Person( x.Id, x.Name ) );
+            return UnitOfWork.GetRepository<Person>()
+                .GetAll().Select( x => x.Map() );
         }
 
         [HttpGet( "{id}" )]
@@ -29,7 +29,7 @@ namespace Members.Server.Controllers
             var person = UnitOfWork.GetRepository<Person>().Get( id );
             if ( person == null ) return null;
 
-            return new Shared.Person( person.Id, person.Name  );
+            return person?.Map();
         }
     }
 }
