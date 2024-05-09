@@ -1,35 +1,52 @@
 ﻿using Members.Core.Repositories;
 using Members.Domain.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace Members.Server.Controllers
 {
     [Route( "api/[controller]" )]
     [ApiController]
+    //[Authorize]
     public class PeopleController : ControllerBase
     {
-        private IUnitOfWork UnitOfWork { get; }
+        private IRepositoryAsync<Person> Repository{ get; }
 
-        public PeopleController( IUnitOfWork unitOfWork )
+        public PeopleController( IUnitOfWorkAsync unitOfWork )
         {
-            UnitOfWork = unitOfWork;
+            Repository = unitOfWork.GetRepositoryAsync<Person>();
         }
 
         [HttpGet]
+        [RequiredScope( "AzureAd:Scopes" )]
         public IEnumerable<Shared.Person>? Get()
         {
-            return UnitOfWork.GetRepository<Person>()
-                .GetAll().Select( x => x.Map() );
+            return Repository.GetAll().Select( x => x.Map() );
         }
 
+        //[HttpGet]
+        //[RequiredScope( "AzureAd:Scopes" )]
+        //public async Task<IActionResult>? GetAsync()
+        //{
+        //    try
+        //    {
+        //        var people = await Repository.GetAllAsync();
+        //        return Ok( people.Select( x => x.Map() ) );
+        //    }
+        //    catch ( Exception ex )
+        //    {
+        //        return StatusCode( StatusCodes.Status500InternalServerError, ex.Message );
+        //    }
+        //}
+
         [HttpGet( "{id}" )]
+        [RequiredScope( "AzureAd:Scopes" )]
         public Shared.Person? Get( int id )
         {
-            var person = UnitOfWork.GetRepository<Person>().Get( id );
-            if ( person == null ) return null;
-
-            return person?.Map();
+            var person = Repository.Get( id );
+            return person?.Map() ?? null;
         }
     }
 }

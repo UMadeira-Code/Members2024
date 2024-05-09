@@ -1,0 +1,63 @@
+﻿@page "/Home"
+
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject HttpClient Http
+@inject IAccessTokenProvider TokenProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Index</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <MudPaper Elevation="4" Style="margin-top: 5px; padding: 5px">
+            <MudToolBar>
+                <MudIconButton Icon="@Icons.Material.Filled.Computer" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Inherit" />
+                <MudDivider Vertical="true" FlexItem="false" />
+                <MudIconButton Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.GroupAdd" Color="Color.Inherit" />
+                <MudDivider Vertical="true" FlexItem="true" />
+                <MudIconButton Icon="@Icons.Material.Filled.Undo" />
+                <MudIconButton Icon="@Icons.Material.Filled.Redo" />
+                <MudDivider Vertical="true" FlexItem="true" />
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Inherit" />
+                <MudSpacer />
+            </MudToolBar>
+        </MudPaper>
+
+        <MudGrid Spacing="0" Style="padding: 5px">
+            <MudItem xs="12" md="6" lg="6">
+                <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
+                    <MudPaper Height="400px" Width="100%" Square="true" Style="padding: 5px 5px 0 5px;">
+                        <MudTreeView T="string" Elevation="4">
+                            @foreach ( var person in people )
+                            {
+                                <MudTreeViewItem Value="@person.Name" />
+                            }
+                        </MudTreeView>
+                    </MudPaper>
+                </MudContainer>
+            </MudItem>
+            <MudItem xs="12" md="6" lg="6">
+                <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
+                    <MudPaper Height="400px" Width="100%" Square="true" Style="padding: 5px 5px 0 5px;">
+                        <MudTreeView T="string" Elevation="4" Class="border-1">
+                            @foreach ( var group in groups )
+                            {
+                                <MudTreeViewItem Value="@group.Name">
+                                @foreach ( var member in group.Members )
+                                {
+                                    <MudTreeViewItem Value="@member.Name" />
+                                }
+                            </MudTreeViewItem>
+                            }
+                        </MudTreeView>
+                    </MudPaper>
+                </MudContainer>
+            </MudItem>
+        </MudGrid>
+
+    </Authorized>
+</AuthorizeView>
