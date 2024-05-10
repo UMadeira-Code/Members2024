@@ -10,31 +10,31 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudPaper Elevation="4" Style="margin-top: 5px; padding: 5px">
-            <MudToolBar>
-                <MudIconButton Icon="@Icons.Material.Filled.Computer" Color="Color.Inherit" />
+        <MudPaper Elevation="4" Style="margin-top: 0px">
+            <MudToolBar Style="padding-left: 8px">
+                <MudIconButton Icon="@Icons.Material.Filled.Computer" Color="Color.Inherit"/>
                 <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Inherit" />
-                <MudDivider Vertical="true" FlexItem="false" />
+                <MudDivider Vertical="true" FlexItem="true" Size="8px" Width="1px"/>
                 <MudIconButton Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Inherit" />
                 <MudIconButton Icon="@Icons.Material.Filled.GroupAdd" Color="Color.Inherit" />
-                <MudDivider Vertical="true" FlexItem="true" />
+                <MudDivider Vertical="true" FlexItem="true" Size="8px" Width="1px" Style="margin-left: 4px; margin-right: 4px;"/>
                 <MudIconButton Icon="@Icons.Material.Filled.Undo" />
                 <MudIconButton Icon="@Icons.Material.Filled.Redo" />
-                <MudDivider Vertical="true" FlexItem="true" />
+                <MudDivider Vertical="true" FlexItem="true" Size="8px" Width="1px"/>
                 <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Inherit" />
                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Inherit" />
                 <MudSpacer />
             </MudToolBar>
         </MudPaper>
 
-        <MudGrid Spacing="0" Style="padding: 5px">
+        <MudGrid Spacing="0" Style="padding: 5px 0 5px">
             <MudItem xs="12" md="6" lg="6">
                 <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
-                    <MudPaper Height="400px" Width="100%" Square="true" Style="padding: 5px 5px 0 5px;">
+                    <MudPaper Height="400px" Width="100%" Square="false" Style="padding: 5px 5px 0 5px;">
                         <MudTreeView T="string" Elevation="4">
                             @foreach ( var person in people )
                             {
-                                <MudTreeViewItem Value="@person.Name" />
+                                <MudTreeViewItem Value="@person.Name" Icon="@Icons.Material.Filled.Person"/>
                             }
                         </MudTreeView>
                     </MudPaper>
@@ -42,14 +42,14 @@
             </MudItem>
             <MudItem xs="12" md="6" lg="6">
                 <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
-                    <MudPaper Height="400px" Width="100%" Square="true" Style="padding: 5px 5px 0 5px;">
-                        <MudTreeView T="string" Elevation="4" Class="border-1">
+                    <MudPaper Height="400px" Width="100%" Square="false" Style="padding: 5px 5px 5px 5px;">
+                        <MudTreeView T="string" Elevation="4">
                             @foreach ( var group in groups )
                             {
-                                <MudTreeViewItem Value="@group.Name">
+                                <MudTreeViewItem Value="@group.Name" Icon="@Icons.Material.Filled.Group">
                                 @foreach ( var member in group.Members )
                                 {
-                                    <MudTreeViewItem Value="@member.Name" />
+                                    <MudTreeViewItem Value="@member.Name" Icon="@Icons.Material.Filled.Person"/>
                                 }
                             </MudTreeViewItem>
                             }
