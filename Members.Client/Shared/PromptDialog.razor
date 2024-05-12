@@ -1,0 +1,10 @@
+﻿<MudDialog>
+    <TitleContent>@Title</TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="Value" Label="Label" Variant="Variant.Text" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="OnOk" Color="Color.Primary">OK</MudButton>
+        <MudButton OnClick="OnCancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>

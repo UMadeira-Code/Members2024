@@ -1,4 +1,5 @@
 using Members.Client;
+using Members.Core.Commands;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -30,6 +31,8 @@ namespace Members.Client
             } );
 
             builder.Services.AddMudServices();
+            builder.Services.AddScoped<IExecutor, ObservableExecutor>();
+
 
             await builder.Build().RunAsync();
         }

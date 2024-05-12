@@ -5,11 +5,18 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Members.Shared;
 using System.Diagnostics;
+using MudBlazor;
+using Members.Core.Observables;
+using System.Data.Common;
+using Members.Core.Commands;
+using Microsoft.AspNetCore.Components.Web;
+using Members.Client.Shared;
+using Members.Shared.Commands;
 
 
 namespace Members.Client.Pages
 {
-    public partial class Home
+    public partial class Home : IObservable
     {
         private string BearerToken { get; set; } = string.Empty;
 
@@ -30,18 +37,28 @@ namespace Members.Client.Pages
                 BearerToken = token.Value;
             }
 
-            var valid = ! string.IsNullOrWhiteSpace( BearerToken );
+            await LoadDataAsync();
+
+            this.Notify += ( s, a ) => {
+                //var id = _selectedPersonId;
+                var changed = HasSelection;
+                StateHasChanged();
+            };
+        }
+
+        private async Task LoadDataAsync()
+        {
             Debug.Assert( !string.IsNullOrWhiteSpace( BearerToken ) );
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", BearerToken );
             people = await Http.GetFromJsonAsync<Person[ ]>( "https://localhost:7204/api/People" );
-            
+
             groups = await Http.GetFromJsonAsync<Group[ ]>( "https://localhost:7204/api/Groups" );
-            foreach ( var group in groups   )
+            foreach ( var group in groups )
             {
                 var members = await GetMembersAsync( group );
                 group.Members = members.ToArray();
             }
-        }
+       }
 
         private IEnumerable<Person> GetMembers( Group group )
         {
@@ -57,6 +74,54 @@ namespace Members.Client.Pages
             var members = await Http.GetFromJsonAsync<Person[]>(
                 $"https://localhost:7204/api/Groups/{group.Id}/Members" );
             return members ?? Array.Empty<Person>();
+        }
+
+        #region Observable
+        public event EventHandler? Notify;
+
+        private void InvokeNotify( EventArgs? args = null )
+        {
+            Notify?.Invoke( this, args ?? EventArgs.Empty );
+        }
+        #endregion
+
+        private string _selectedPersonId = string.Empty;
+        private string SelectedPersonId
+        {
+            get => _selectedPersonId;
+            set { _selectedPersonId = value; HasSelection = ! string.IsNullOrEmpty( value ); }
+        }
+
+        private bool HasSelection { get; set; }
+
+        private async Task OnEdit() 
+        {
+            if ( int.TryParse( SelectedPersonId, out int id ) )
+            {
+                var person = people?.FirstOrDefault( e => e.Id == id );
+                if ( person == null ) return;
+
+                var parameters = new DialogParameters<PromptDialog> {
+                    { x => x.Title, "Change Person's Name Dialog" },
+                    { x => x.Label, "Person's Name" },
+                    { x => x.Value, person.Name     }
+                };
+
+                var options = new DialogOptions { CloseOnEscapeKey = true };
+                var dialog = await DialogService.ShowAsync<PromptDialog>( "Change Name", parameters, options );
+                var result = await dialog.Result;
+
+                if ( ! result.Canceled )
+                { 
+                    var label = result.Data.ToString() ?? string.Empty;
+                    Executor.Execute( new RenameCommand( person, label ) );
+                }
+            }
+        }
+
+        private async Task OnDelete( MouseEventArgs e )
+        {
+            SelectedPersonId = string.Empty;
         }
     }
 }

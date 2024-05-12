@@ -1,10 +1,13 @@
 ﻿@page "/Home"
 
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Members.Core.Commands;
 
 @inject HttpClient Http
 @inject IAccessTokenProvider TokenProvider
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject IExecutor Executor
 
 <PageTitle>Index</PageTitle>
 
@@ -12,17 +15,17 @@
     <Authorized>
         <MudPaper Elevation="4" Style="margin-top: 0px">
             <MudToolBar Style="padding-left: 8px">
-                <MudIconButton Icon="@Icons.Material.Filled.Computer" Color="Color.Inherit"/>
-                <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Inherit" />
+                @* <MudIconButton Icon="@Icons.Material.Filled.Computer" Color="Color.Inherit"/> *@
+                <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Inherit" Disabled="@(Executor.HasUndo == false)" />
                 <MudDivider DividerType="DividerType.FullWidth" Vertical="true" Light="true" Size="1px" Style="margin-left: 4px; margin-right: 4px;" />
                 <MudIconButton Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Inherit" />
                 <MudIconButton Icon="@Icons.Material.Filled.GroupAdd" Color="Color.Inherit" />
                 <MudDivider DividerType="DividerType.FullWidth" Vertical="true" Light="true" Size="1px" Style="margin-left: 4px; margin-right: 4px;" />
-                <MudIconButton Icon="@Icons.Material.Filled.Undo" />
-                <MudIconButton Icon="@Icons.Material.Filled.Redo" />
+                <MudIconButton Icon="@Icons.Material.Filled.Undo" Color="Color.Inherit" Disabled="@(Executor.HasUndo == false)" OnClick="(e) => Executor.Undo()" />
+                <MudIconButton Icon="@Icons.Material.Filled.Redo" Color="Color.Inherit" Disabled="@(Executor.HasRedo == false)" OnClick="(e) => Executor.Redo()" />
                 <MudDivider DividerType="DividerType.FullWidth" Vertical="true" Light="true" Size="1px" Style="margin-left: 4px; margin-right: 4px;" />
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Inherit" />
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Inherit" />
+                <MudIconButton Icon="@Icons.Material.Filled.Edit"   Color="Color.Inherit" Disabled="@string.IsNullOrEmpty(this.SelectedPersonId)" OnClick="OnEdit"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Inherit" Disabled="@string.IsNullOrEmpty(this.SelectedPersonId)" OnClick="OnDelete" />
                 <MudDivider DividerType="DividerType.FullWidth" Vertical="true" Light="true" Size="1px" Style="margin-left: 4px; margin-right: 4px;" />
                 <MudSpacer />
             </MudToolBar>
@@ -32,10 +35,10 @@
             <MudItem xs="12" md="6" lg="6">
                 <MudContainer Fixed="true" Style="padding-left: 0;padding-right: 0;">
                     <MudPaper Height="400px" Width="100%" Square="false" Style="padding: 5px 5px 0 5px;">
-                        <MudTreeView T="string" Elevation="4">
+                        <MudTreeView T="string" Elevation="4" Hover="true" MultiSelection="false" @bind-SelectedValue="SelectedPersonId">
                             @foreach ( var person in people )
                             {
-                                <MudTreeViewItem Value="@person.Name" Icon="@Icons.Material.Filled.Person"/>
+                                <MudTreeViewItem Value="@person.Id.ToString()" Icon="@Icons.Material.Filled.Person" Text="@person.Name"/>
                             }
                         </MudTreeView>
                     </MudPaper>
